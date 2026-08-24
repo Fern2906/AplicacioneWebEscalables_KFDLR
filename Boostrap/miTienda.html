@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechST | Tecnología para todos</title>
+    <style>
+        :root { --azul: #2563eb; --azul-oscuro: #0f172a; --azul-claro: #eff6ff; --texto: #1e293b; --gris: #64748b; --fondo: #f8fafc; --blanco: #ffffff; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: Arial, sans-serif; background: var(--fondo); color: var(--texto); }
+        a { text-decoration: none; }
+        header { height: 75px; padding: 0 7%; background: rgba(255, 255, 255, 0.9); display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid #e2e8f0; backdrop-filter: blur(10px); }
+        .logotipo { display: flex; align-items: center; gap: 10px; font-size: 22px; font-weight: bold; color: var(--azul-oscuro); }
+        .logotipo svg { width: 30px; height: 30px; color: var(--azul); }
+        nav { display: flex; gap: 30px; }
+        nav a { color: var(--gris); font-size: 15px; transition: 0.3s; }
+        nav a:hover { color: var(--azul); }
+        .presentacion { min-height: 600px; padding: 70px 7%; display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 50px; background: radial-gradient(circle at 80% 20%, #dbeafe 0, transparent 30%), var(--fondo); }
+        .texto-presentacion { animation: aparecer 0.8s ease; }
+        .presentacion h1 { font-size: clamp(42px, 5vw, 68px); line-height: 1.05; color: var(--azul-oscuro); margin-bottom: 25px; }
+        .presentacion h1 span { color: var(--azul); }
+        .presentacion p { color: var(--gris); font-size: 18px; line-height: 1.7; max-width: 520px; margin-bottom: 30px; }
+        .imagen-presentacion { position: relative; }
+        .imagen-presentacion img { width: 100%; border-radius: 24px; display: block; box-shadow: 0 30px 60px rgba(15, 23, 42, 0.18); }
+        .beneficios { background: white; padding: 25px 7%; display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid #e2e8f0; border-bottom: 1px solid #e2e8f0; }
+        .beneficio { display: flex; justify-content: center; align-items: center; gap: 15px; padding: 15px; }
+        .beneficio svg { width: 30px; height: 30px; color: var(--azul); }
+        .beneficio strong { display: block; margin-bottom: 3px; }
+        .beneficio span { color: var(--gris); font-size: 13px; }
+        section { max-width: 1200px; margin: auto; padding: 90px 25px; }
+        .cabecera-seccion { text-align: center; margin-bottom: 45px; }
+        .cabecera-seccion span { color: var(--azul); font-size: 13px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
+        .cabecera-seccion h2 { font-size: 36px; color: var(--azul-oscuro); margin-top: 10px; }
+        .cabecera-seccion p { color: var(--gris); margin-top: 12px; }
+        .productos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; }
+        .producto { background: white; border-radius: 16px; overflow: hidden; border: 1px solid #e2e8f0; transition: transform 0.35s, box-shadow 0.35s; }
+        .producto:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(15, 23, 42, 0.1); }
+        .producto-imagen { height: 250px; overflow: hidden; background: #f1f5f9; }
+        .producto-imagen img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+        .producto:hover .producto-imagen img { transform: scale(1.06); }
+        .info-producto { padding: 22px; }
+        .categoria { color: var(--azul); font-size: 12px; font-weight: bold; text-transform: uppercase; }
+        .producto h3 { font-size: 20px; margin: 8px 0; }
+        .producto p { color: var(--gris); font-size: 14px; line-height: 1.5; margin-bottom: 18px; }
+        .producto-inferior { display: flex; justify-content: space-between; align-items: center; }
+        .precio { font-size: 21px; font-weight: bold; color: var(--azul-oscuro); }
+        .comprar { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: var(--azul); color: white; border-radius: 8px; transition: 0.3s; }
+        .comprar:hover { background: #1d4ed8; transform: scale(1.1); }
+        .comprar svg { width: 19px; }
+        #reviews { max-width: none; background: #eff6ff; padding-left: 7%; padding-right: 7%; }
+        .contenedor-opiniones { max-width: 1100px; margin: auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; }
+        .opinion { background: white; padding: 28px; border-radius: 16px; border: 1px solid #dbeafe; transition: transform 0.3s; }
+        .opinion:hover { transform: translateY(-5px); }
+        .cita { color: var(--azul); margin-bottom: 15px; }
+        .cita svg { width: 28px; }
+        .opinion p { color: var(--gris); line-height: 1.7; margin-bottom: 20px; }
+        .usuario-opinion { display: flex; align-items: center; gap: 12px; }
+        .avatar { width: 42px; height: 42px; border-radius: 50%; background: var(--azul); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+        .usuario-opinion strong { display: block; }
+        .usuario-opinion span { color: var(--gris); font-size: 12px; }
+        footer { background: var(--azul-oscuro); color: white; padding: 55px 7% 25px; }
+        .contenido-pie { max-width: 1200px; margin: auto; display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 50px; padding-bottom: 40px; border-bottom: 1px solid #334155; }
+        .logotipo-pie { display: flex; align-items: center; gap: 10px; font-size: 23px; font-weight: bold; margin-bottom: 15px; }
+        .logotipo-pie svg { width: 28px; color: #60a5fa; }
+        .descripcion-pie { color: #94a3b8; max-width: 350px; line-height: 1.6; }
+        footer h3 { font-size: 15px; margin-bottom: 15px; }
+        footer ul { list-style: none; }
+        footer li { margin-bottom: 10px; }
+        footer a { color: #94a3b8; font-size: 14px; transition: 0.3s; }
+        footer a:hover { color: white; }
+        .derechos { max-width: 1200px; margin: 20px auto 0; color: #64748b; font-size: 13px; }
+        @keyframes aparecer { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes flotar { 0% { transform: translateY(0); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0); } }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="#" class="logotipo"><i data-lucide="monitor"></i> TechST</a>
+        <nav>
+            <a href="#productos">Productos</a>
+            <a href="#reviews">Opiniones</a>
+            <a href="#contacto">Contacto</a>
+        </nav>
+    </header>
+    <main>
+        <section class="presentacion">
+            <div class="texto-presentacion">
+                <h1>Tecnología que <span>transforma</span> tu día.</h1>
+                <p>Descubre los mejores productos</p>
+            </div>
+            <div class="imagen-presentacion">
+                <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=800&q=80" alt="Smartphone moderno"">
+            </div>
+        </section>
+        <div class="beneficios">
+            <div class="beneficio">
+                <i data-lucide="truck"></i>
+                <div>
+                    <strong>Envío rápido</strong>
+                    <span>Recibe tus productos rápidamente</span>
+                </div>
+            </div>
+            <div class="beneficio">
+                <i data-lucide="shield-check"></i>
+                <div>
+                    <strong>Compra segura</strong>
+                    <span>Tus datos siempre protegidos</span>
+                </div>
+            </div>
+            <div class="beneficio">
+                <i data-lucide="rotate-ccw"></i>
+                <div>
+                    <strong>Garantía incluida</strong>
+                    <span>Productos con garantía</span>
+                </div>
+            </div>
+        </div>
+        <section id="productos">
+            <div class="cabecera-seccion">
+                <span>Nuestra selección</span>
+                <h2>Productos destacados</h2>
+                <p>Tecnología seleccionada para mejorar tu experiencia digital.</p>
+            </div>
+            <div class="productos">
+                <article class="producto">
+                    <div class="producto-imagen">
+                        <img src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=800&q=80" alt="Laptop moderna">
+                    </div>
+                    <div class="info-producto">
+                        <span class="categoria">Computadoras</span>
+                        <h3>Laptop</h3>
+                        <p>Alto rendimiento para trabajo, programación y entretenimiento.</p>
+                        <div class="producto-inferior">
+                            <span class="precio">$18,999</span>
+                            <a href="#" class="comprar" aria-label="Comprar laptop"><i data-lucide="shopping-cart"></i></a>
+                        </div>
+                    </div>
+                </article>
+                <article class="producto">
+                    <div class="producto-imagen">
+                        <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=800&q=80" alt="Audífonos inalámbricos">
+                    </div>
+                    <div class="info-producto">
+                        <span class="categoria">Audio</span>
+                        <h3>Headphones</h3>
+                        <p>Audio envolvente con cancelación activa de ruido.</p>
+                        <div class="producto-inferior">
+                            <span class="precio">$2,499</span>
+                            <a href="#" class="comprar" aria-label="Comprar audífonos"><i data-lucide="shopping-cart"></i></a>
+                        </div>
+                    </div>
+                </article>
+                <article class="producto">
+                    <div class="producto-imagen">
+                        <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=800&q=80" alt="Smartphone moderno">
+                    </div>
+                    <div class="info-producto">
+                        <span class="categoria">Smartphones</span>
+                        <h3>Iphone 15</h3>
+                        <p>Pantalla de alta resolución y cámara profesional.</p>
+                        <div class="producto-inferior">
+                            <span class="precio">$12,999</span>
+                            <a href="#" class="comprar" aria-label="Comprar smartphone"><i data-lucide="shopping-cart"></i></a>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </section>
+        <section id="reviews">
+            <div class="cabecera-seccion">
+                <span>Opiniones</span>
+                <h2>Lo que dicen nuestros clientes</h2>
+            </div>
+            <div class="contenedor-opiniones">
+                <article class="opinion">
+                    <div class="cita"><i data-lucide="quote"></i></div>
+                    <p>La laptop llegó perfectamente empacada. El rendimiento es excelente y el proceso de compra fue muy sencillo.</p>
+                    <div class="usuario-opinion">
+                        <div class="avatar">JP</div>
+                        <div>
+                            <strong>Juan Pérez</strong>
+                            <span>Cliente verificado</span>
+                        </div>
+                    </div>
+                </article>
+                <article class="opinion">
+                    <div class="cita"><i data-lucide="quote"></i></div>
+                    <p>Los audífonos tienen una calidad de sonido increíble. Además, llegaron antes de lo esperado.</p>
+                    <div class="usuario-opinion">
+                        <div class="avatar">ML</div>
+                        <div>
+                            <strong>María López</strong>
+                            <span>Cliente verificado</span>
+                        </div>
+                    </div>
+                </article>
+                <article class="opinion">
+                    <div class="cita"><i data-lucide="quote"></i></div>
+                    <p>Muy buena tienda. Encontré exactamente el smartphone que estaba buscando y a un precio bastante competitivo.</p>
+                    <div class="usuario-opinion">
+                        <div class="avatar">CR</div>
+                        <div>
+                            <strong>Carlos Ramírez</strong>
+                            <span>Cliente verificado</span>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </section>
+    </main>
+    <footer id="contacto">
+        <div class="contenido-pie">
+            <div>
+                <div class="logotipo-pie"><i data-lucide="monitor"></i> TechST</div>
+                <p class="descripcion-pie">Tecnología moderna para personas que buscan mejores herramientas para trabajar, estudiar y disfrutar.</p>
+            </div>
+            <div>
+                <h3>Tienda</h3>
+                <ul>
+                    <li><a href="#productos">Productos</a></li>
+                    <li><a href="#">Ofertas</a></li>
+                    <li><a href="#">Nuevos productos</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3>Contacto</h3>
+                <ul>
+                    <li><a href="#">contacto@TechST.com</a></li>
+                    <li><a href="#">+52 444 123 4567</a></li>
+                    <li><a href="#">San Luis Potosí, México</a></li>
+                </ul>
+            </div>
+        </div>
+        <p class="derechos">© 2026 TechST. Todos los derechos reservados.</p>
+    </footer>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>lucide.createIcons();</script>
+</body>
+</html>
