@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Malla - Demostración</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    
+    <style>
+        body {
+            padding-top: 70px;
+            background-color: #f8f9fa;
+        }
+        .section-title {
+            border-bottom: 3px solid #0d6efd;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+        .demo-box {
+            background-color: white;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .demo-box h5 {
+            color: #6c757d;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #e9ecef;
+            padding-bottom: 8px;
+        }
+        .code-block {
+            background-color: #1e1e1e;
+            color: #d4d4d4;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            overflow-x: auto;
+            margin-top: 10px;
+        }
+        .code-block .tag { color: #569cd6; }
+        .code-block .attr { color: #9cdcfe; }
+        .code-block .value { color: #ce9178; }
+        .code-block .comment { color: #6a9955; }
+        .code-label {
+            display: inline-block;
+            background-color: #2d2d2d;
+            color: #fff;
+            font-size: 0.7rem;
+            padding: 2px 10px;
+            border-radius: 4px 4px 0 0;
+            font-family: monospace;
+            margin-top: 15px;
+        }
+        .descripcion {
+            background-color: #e7f3ff;
+            border-left: 4px solid #0d6efd;
+            padding: 10px 15px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+        }
+        .descripcion i {
+            color: #0d6efd;
+        }
+        .ejemplo-wrap {
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            padding: 15px;
+            background-color: #fafafa;
+            margin-bottom: 10px;
+        }
+        .badge-code {
+            font-size: 0.65rem;
+            background-color: #2d2d2d;
+            color: #fff;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+        .grid-demo {
+            background-color: #e7f1ff;
+            border: 1px solid #b6d4fe;
+            padding: 15px;
+            text-align: center;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+        .grid-demo .col,
+        .grid-demo .col-*,
+        .grid-demo .col-sm-*,
+        .grid-demo .col-md-*,
+        .grid-demo .col-lg-*,
+        .grid-demo .col-xl-* {
+            background-color: #cfe2ff;
+            border: 1px solid #9ec5fe;
+            padding: 15px;
+            text-align: center;
+            border-radius: 4px;
+        }
+        .grid-demo-nested {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .grid-demo-nested .col {
+            background-color: #d1e7dd;
+            border: 1px solid #a3cfbb;
+            padding: 10px;
+            text-align: center;
+            border-radius: 4px;
+        }
+        .highlight {
+            background-color: #fff3cd;
+            border: 1px solid #ffecb5;
+        }
+        .bg-grid-primary { background-color: #0d6efd; color: white; padding: 15px; text-align: center; border-radius: 4px; }
+        .bg-grid-success { background-color: #198754; color: white; padding: 15px; text-align: center; border-radius: 4px; }
+        .bg-grid-danger { background-color: #dc3545; color: white; padding: 15px; text-align: center; border-radius: 4px; }
+        .bg-grid-warning { background-color: #ffc107; color: #000; padding: 15px; text-align: center; border-radius: 4px; }
+        .bg-grid-info { background-color: #0dcaf0; color: #000; padding: 15px; text-align: center; border-radius: 4px; }
+        .bg-grid-dark { background-color: #212529; color: white; padding: 15px; text-align: center; border-radius: 4px; }
+        .bg-grid-light { background-color: #f8f9fa; color: #000; padding: 15px; text-align: center; border-radius: 4px; border: 1px solid #dee2e6; }
+    </style>
+</head>
+<body>
+
+    <!-- ======================== -->
+    <!-- NAVBAR (Header fijo)    -->
+    <!-- ======================== -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <i class="bi bi-grid-3x3-gap-fill text-primary"></i>
+                Sistema de Malla
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#contenedores">Contenedores</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#filas">Filas</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#columnas">Columnas</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#responsive">Responsive</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#anidacion">Anidación</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#offset">Offset</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#orden">Orden</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#layouts">Layouts</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ======================== -->
+    <!-- CONTENIDO PRINCIPAL     -->
+    <!-- ======================== -->
+    <div class="container">
+
+        <!-- Título principal -->
+        <div class="text-center py-4 mb-4">
+            <h1 class="display-4 fw-bold text-primary">
+                <i class="bi bi-grid-3x3-gap-fill"></i> Sistema de Malla
+            </h1>
+            <p class="lead text-muted">
+                El corazón de Bootstrap: Grid de 12 columnas con Flexbox
+            </p>
+            <div class="d-flex justify-content-center gap-2 flex-wrap">
+                <span class="badge bg-secondary">Contenedores</span>
+                <span class="badge bg-secondary">Filas</span>
+                <span class="badge bg-secondary">Columnas</span>
+                <span class="badge bg-secondary">Responsive</span>
+                <span class="badge bg-secondary">Anidación</span>
+                <span class="badge bg-secondary">Offset</span>
+                <span class="badge bg-secondary">Orden</span>
+                <span class="badge bg-secondary">Layouts</span>
+            </div>
+        </div>
+
+        <!-- ================================================================ -->
+        <!-- SECCIÓN 1: CONTENEDORES                                         -->
+        <!-- ================================================================ -->
+        <section id="contenedores" class="demo-box">
+            <h3 class="section-title">
+                <i class="bi bi-box text-primary"></i> 1. Contenedores
+            </h3>
+            <p class="text-muted">Los contenedores son la base del grid. Centran el contenido y definen el ancho máximo.</p>
+
+            <div class="descripcion">
+                <i class="bi bi-info-circle"></i> 
+                <strong>.container</strong> - Ancho fijo que cambia en cada breakpoint<br>
+                <i class="bi bi-info-circle"></i> 
+                <strong>.container-fluid</strong> - Ancho del 100% siempre<br>
+                <i class="bi bi-info-circle"></i> 
+                <strong>.container-{breakpoint}</strong> - Ancho fijo hasta el breakpoint, luego 100%
+            </div>
+
+            <h5>Container fijo</h5>
+            <div class="ejemplo-wrap">
+                <div class="container bg-primary text-white p-3 rounded">
+                    .container - Ancho fijo y centrado
+                </div>
+            </div>
+            <div class="code-label">CÓDIGO</div>
+            <div class="code-block">
+                <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"container"</span><span class="tag">&gt;</span><br>
+                &nbsp;&nbsp;Contenido centrado con ancho máximo<br>
+                <span class="tag">&lt;/div&gt;</span>
+            </div>
+
+            <h5 class="mt-4">Container fluid</h5>
+            <div class="ejemplo-wrap">
+                <div class="container-fluid bg-success text-white p-3 rounded">
+                    .container-fluid - 100% de ancho
+                </div>
+            </div>
+            <div class="code-label">CÓDIGO</div>
+            <div class="code-block">
+                <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"container-fluid"</span><span class="tag">&gt;</span><br>
+                &nbsp;&nbsp;Contenido que ocupa todo el ancho<br>
+                <span class="tag">&lt;/div&gt;</span>
+            </div>
+
+            <h5 class="mt-4">Container responsivo</h5>
+            <div class="ejemplo-wrap">
+                <div class="container-md bg-danger text-white p-3 rounded">
+                    .container-md - Fluido hasta md, luego fijo
+                    <small class="d-block text-white-50">Redimensiona la ventana para ver el cambio</small>
+                </div>
+            </div>
+            <div class="code-label">CÓDIGO</div>
+            <div class="code-block">
+                <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"container-md"</span><span class="tag">&gt;</span><br>
+                &nbsp;&nbsp;Fluido hasta md, fijo en md+<br>
+                <span class="tag">&lt;/div&gt;</span>
+            </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- SECCIÓN 2: FILAS                                                -->
+        <!-- ================================================================ -->
+        <section id="filas" class="demo-box">
+            <h3 class="section-title">
+                <i class="bi bi-rows text-primary"></i> 2. Filas
+            </h3>
+            <p class="text-muted">Las filas agrupan columnas y manejan el espaciado entre ellas.</p>
+
+            <div class="descripcion">
+                <i class="bi bi-info-circle"></i> 
+                <strong>.row</strong> - Clase base para crear una fila<br>
+                <i class="bi bi-info-circle"></i> 
+                <strong>.row-cols-*</strong> - Distribuye columnas automáticamente<br>
+                <i class="bi bi-info-circle"></i> 
+                <strong>.g-*</strong> - Espaciado entre columnas (gutter)<br>
+                <i class="bi bi-info-circle"></i> 
+                <strong>.gx-*</strong> - Espaciado horizontal<br>
+                <i class="bi bi-info-circle"></i> 
+                <strong>.gy-*</strong> - Espaciado vertical
+            </div>
+
+            <h5>Fila básica</h5>
+            <div class="ejemplo-wrap">
+                <div class="row grid-demo">
+                    <div class="col">Columna 1</div>
+                    <div class="col">Columna 2</div>
+                    <div class="col">Columna 3</div>
+                </div>
+            </div>
+            <div class="code-label">CÓDIGO</div>
+            <div class="code-block">
+                <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"row"</span><span class="tag">&gt;</span><br>
+                &nbsp;&nbsp;<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"col"</span><span class="tag">&gt;</span>Columna 1<span class="tag">&lt;/div&gt;</span><br>
+                &nbsp;&nbsp;<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"col"</span><span class="tag">&gt;</span>Columna 2<span class="tag">&lt;/div&gt;</span><br>
+                <span class="tag">&lt;/div&gt;</span>
+            </div>
+
+            <h5 class="mt-4">Row-cols (columnas automáticas)</h5>
+            <div class="ejemplo-wrap">
+                <div class="row row-cols-4 grid-demo">
+                    <div class="col">1</div>
+                    <div class="col">2</div>
+                    <div class="col">3</div>
+                    <div class="col">4</div>
+                </div>
+                <p class="mt-2"><small>.row-cols-4 crea 4 columnas automáticas</small></p>
+            </div>
+            <div class="code-label">CÓDIGO</div>
+            <div class="code-block">
+                <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"row row-cols-4"</span><span class="tag">&gt;</span><br>
+                &nbsp;&nbsp;<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"col"</span><span class="tag">&gt;</span>1<span class="tag">&lt;/div&gt;</span><br>
+                &nbsp;&nbsp;<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"col"</span><span class="tag">&gt;</span>2<span class="tag">&lt;/div&gt;</span><br>
+                &nbsp;&nbsp;<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"col"</span><span class="tag">&gt;</span>3<span class="tag">&lt;/div&gt;</span><br>
+                &nbsp;&nbsp;<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"col"</span><span class="tag">&gt;</span>4<span class="tag">&lt;/div&gt;</span><br>
+                <span class="tag">&lt;/div&gt;</span>
+            </div>
+
+            <h5 class="mt-4">Gutters (espaciado)</h5>
+            <div class="ejemplo-wrap">
+                <div class="row g-4 grid-demo">
+                    <div class="col">Gutter grande</div>
+                    <div class="col">Gutter grande</div>
+                    <div class="col">Gutter grande</div>
+                </div>
+                <p class="mt-2"><small>.g-4 crea un espaciado de 1.5rem entre columnas</small></p>
+            </div>
+            <div class="code-label">CÓDIGO</div>
+            <div class="code-block">
+                <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"row g-4"</span><span class="tag">&gt;</span><br>
+                &nbsp;&nbsp;<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"col"</span><span class="tag">&gt;</span>Espaciado grande<span class="tag">&lt;/div&gt;</span><br>
+                <span class="tag">&lt;/div&gt;</span>
+            </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- SECCIÓN 3: COLUMNAS                                             -->
+        <!-- ================================================================ -->
+        <section id="columnas" class="demo-box">
+            <h3 class="section-title">
+                <i class="bi bi-layout-three-columns text-primary"></i> 3. Columnas
+            </h3>
+            <p class="text-muted">Las columnas contienen el contenido y se distribuyen en las 12 columnas del grid.</p>
+
+            <div class="descripcion">
+                <i class="bi bi-info-circle"></i> 
+                <strong>.col</strong> - Columna automática (distribuye equitativamente)<br>
+                <i class="bi bi-info-circle"></i> 
+                <strong>.col-{number}</strong> - Columna que ocupa {number} de 12<br>
+                <i class="bi bi-info-circle"></i> 
+                <strong>.col-auto</strong> - Columna que se ajusta al contenido
+            </div>
+
+            <h5>Distribución básica (12 columnas)</h5>
+            <div class="ejemplo-wrap">
+                <div class="row grid-demo">
+                    <div class="col-12">.col-12 (100%)</div>
+                </div>
+                <div class="row grid-demo mt-2">
+                    <div class="col-6">.col-6 (50%)</div>
+                    <div class="col-6">.col-6 (50%)</div>
+                </div>
+                <div class="row grid-demo mt-2">
+                    <div class="col-4">.col-4 (33.33%)</div>
+                    <div class="col-4">.col-4 (33.33%)</div>
+                    <div class="col-4">.col-4 (33.33%)</div>
+                </div>
+                <div class="row grid-demo mt-2">
+                    <div class="col-3">.col-3 (25%)</div>
+                    <div class="col-3">.col-3 (25%)</div>
+                    <div class="col-3">.col-3 (25%)</div>
+                    <div class="col-3">.col-3 (25%)</div>
+                </div>
+            </div>
+
+            <div class="code-label">CÓDIGO</div>
+            <div class="code-block">
+                <span class="comment">&lt;!-- 2 columnas de 50% --&gt;</span><br>
+                <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"row"</span><span class="tag">&gt;</span><br>
+                &nbsp;&nbsp;<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"col-6"</span><span class="tag">&gt;</span>50%<span class="tag">&lt;/div&gt;</span><br>
+                &nbsp;&nbsp;<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"col-6"</span><span class="tag">&gt;</span>50%<span class="tag">&lt;/div&gt;</span><br>
+                <span class="tag">&lt;/div&gt;</span>
+            </div>
+
+            <h5 class="mt-4">Columnas automáticas (.col)</h5>
+            <div class="ejemplo-wrap">
+                <div class="row grid-demo">
+                    <div class="col">.col (Auto)</div>
+                    <div class="col">.col (Auto)</div>
+                    <div class="col">.col (Auto)</div>
+                </div>
+                <p class="mt-1"><small>Se distribuyen equitativamente</small></p>
+            </div>
+            <div class="code-label">CÓDIGO</div>
+            <div class="code-block">
+                <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"row"</span><span class="tag">&gt;</span><br>
+                &nbsp;&nbsp;<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"col"</span><span class="tag">&gt;</span>Auto<span class="tag">&lt;/div&gt;</span><br>
+                &nbsp;&nbsp;<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"col"</span><span class="tag">&gt;</span>Auto<span class="tag">&lt;/div&gt;</span><br>
+                <span class="tag">&lt;/div&gt;</span>
+            </div>
+
+            <h5 class="mt-4">Columnas auto (.col-auto)</h5>
+            <div class="ejemplo-wrap">
+                <div class="row grid-demo">
+                    <div class="col-auto bg-grid-primary">.col-auto</div>
+                    <div class="col-auto bg-grid-success">.col-auto</div>
+                    <div class="col bg-grid-danger">.col (ocupa el resto)</div>
+                </div>
+                <p class="mt-1"><small>.col-auto se ajusta al contenido, .col ocupa el resto</small></p>
+            </div>
+            <div class="code-label">CÓDIGO</div>
+            <div class="code-block">
+                <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"row"</span><span class="tag">&gt;</span><br>
+                &nbsp;&nbsp;<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"col-auto"</span><span class="tag">&gt;</span>Auto<span class="tag">&lt;/div&gt;</span><br>
+                &nbsp;&nbsp;<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"col"</span><span class="tag">&gt;</span>Resto<span class="tag">&lt;/div&gt;</span><br>
+                <span class="tag">&lt;/div&gt;</span>
+            </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- SECCIÓN 4: RESPONSIVE                                           -->
+        <!-- ================================================================ -->
+        <section id="responsive" class="demo-box">
+            <h3 class="section-title">
+                <i class="bi bi-phone text-primary"></i> 4. Columnas Responsivas
+            </h3>
+            <p class="text-muted">Las columnas pueden tener diferentes tamaños según el breakpoint.</p>
+
+            <div class="descripcion">
+                <i class="bi bi-info-circle"></i> 
+                <strong>.col-{breakpoint}-{number}</strong> - Columna responsiva<br>
+                <i class="bi bi-info-circle"></i> 
+                Breakpoints: <strong>sm</strong> (576px), <strong>md</strong> (768px), <strong>lg</strong> (992px), <strong>xl</strong> (1200px)<br>
+                <i class="bi bi-info-circle"></i> 
+                <strong>.d-none .d-md-block</strong> - Oculta/muestra según breakpoint
+            </div>
+
+            <h5>Grid responsivo</h5>
+            <div class="ejemplo-wrap">
+                <div class="row grid-demo">
+                    <div class="col-12 col-md-6 col-lg-4 bg-grid-primary">
+                        .col-12 .col-md-6 .col-lg-4
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-4 bg-grid-success">
+                        .col-12 .col-md-6 .col-lg-4
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-4 bg-grid-danger">
+                        .col-12 .col-md-6 .col-lg-4
+                    </div>
+                </div>
+                <p class="mt-1">
+                    <small>Móvil: 12 (100%) | Tablet: 6 (50%) | Escritorio: 4 (33.33%)</small>
+                    <br>
+                    <small class="text-muted">Redimensiona la ventana para ver los cambios</small>
+                </p>
+            </div>
+
+            <div class="code-label">CÓDIGO</div>
+            <div class="code-block">
+                <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"row"</span><span class="tag">&gt;</span><br>
+                &nbsp;&nbsp;<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"col-12 col-md-6 col-lg-4"</span><span class="tag">&gt;</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;12 en móvil, 6 en tablet, 4 en escritorio<br>
+                &nbsp;&nbsp;<span class="tag">&lt;/div&gt;</span><br>
+                <span class="tag">&lt;/div&gt;</span>
+            </div>
+
+            <h5 class="mt-4">Ocultar/Mostrar según breakpoint</h5>
+            <div class="ejemplo-wrap">
+                <div class="row grid-demo">
+                    <div class="col-12 bg-grid-primary d-block d-sm-none">.d-block .d-sm-none (Solo móvil)</div>
+                    <div class="col-12 bg-grid-success d-none d-sm-block d-md-none">.d-none .d-sm-block .d-md-none (Solo tablet pequeña)</div>
+                    <div class="col-12 bg-grid-danger d-none d-md-block">.d-none .d-md-block (Tablet y escritorio)</div>
+                </div>
+                <p class="mt-1"><small>Redimensiona la ventana para ver los cambios</small></p>
+            </div>
+
+            <div class="code-label">CÓDIGO</div>
+            <div class="code-block">
+                <span class="comment">&lt;!-- Visible solo en móvil --&gt;</span><br>
+                <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"d-block d-sm-none"</span><span class="tag">&gt;</span>Móvil<span class="tag">&lt;/div&gt;</span><br>
+                <span class="comment">&lt;!-- Visible en tablet y escritorio --&gt;</span><br>
+                <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"d-none d-md-block"</span><span class="tag">&gt;</span>Tablet+<span class="tag">&lt;/div&gt;</span>
+            </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- SECCIÓN 5: ANIDACIÓN                                            -->
+        <!-- ================================================================ -->
+        <section id="anidacion" class="demo-box">
+            <h3 class="section-title">
+                <i class="bi bi-diagram-3 text-primary"></i> 5. Anidación (Nesting)
+            </h3>
+            <p class="text-muted">Puedes anidar filas dentro de columnas para crear layouts más complejos.</p>
+
+            <div class="descripcion">
+                <i class="bi bi-info-circle"></i> 
+                Cada fila anidada tiene su propio sistema de 12 columnas<br>
+                <i class="bi bi-info-circle"></i> 
+                El contenido de la columna padre limita el ancho de las columnas anidadas
+            </div>
+
+            <h5>Grid anidado</h5>
+            <div class="ejemplo-wrap">
+                <div class="row grid-demo">
+                    <div class="col-8 bg-grid-primary">
+                        .col-8 (Columna principal)
+                        <div class="row grid-demo-nested mt-2">
+                            <div class="col-6">.col-6 (Sub-columna)</div>
+                            <div class="col-6">.col-6 (Sub-columna)</div>
+                        </div>
+                    </div>
+                    <div class="col-4 bg-grid-success">
+                        .col-4 (Sidebar)
+                        <div class="row grid-demo-nested mt-2">
+                            <div class="col-12">.col-12</div>
+                            <div class="col-12">.col-12</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="code-label">CÓDIGO</div>
+            <div class="code-block">
+                <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"row"</span><span class="tag">&gt;</span><br>
+                &nbsp;&nbsp;<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"col-8"</span><span class="tag">&gt;</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;Columna principal<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"row"</span><span class="tag">&gt;</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"col-6"</span><span class="tag">&gt;</span>Sub 1<span class="tag">&lt;/div&gt;</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"col-6"</span><span class="tag">&gt;</span>Sub 2<span class="tag">&lt;/div&gt;</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;/div&gt;</span><br>
+                &nbsp;&nbsp;<span class="tag">&lt;/div&gt;</span><br>
+                <span class="tag">&lt;/div&gt;</span>
+            </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- SECCIÓN 6: OFFSET                                               -->
+        <!-- ================================================================ -->
+        <section id="offset" class="demo-box">
+            <h3 class="section-title">
+                <i class="bi bi-arrow-right text-primary"></i> 6. Offset (Desplazamiento)
+            </h3>
+            <p class="text-muted">El offset desplaza una columna a la derecha sin afectar a las demás.</p>
+
+            <div class="descripcion">
+                <i class="bi bi-info-circle"></i> 
+                <strong>.offset-{number}</strong> - Desplaza {number} columnas<br>
+                <i class="bi bi-info-circle"></i> 
+                <strong>.offset-{breakpoint}-{number}</strong> - Offset responsivo<br>
+                <i class="bi bi-info-circle"></i> 
+                Útil para centrar o crear espacios
+            </div>
+
+            <h5>Offset básico</h5>
+            <div class="ejemplo-wrap">
+                <div class="row grid-demo">
+                    <div class="col-4 bg-grid-primary">.col-4</div>
+                    <div class="col-4 offset-4 bg-grid-success">.col-4 .offset-4</div>
+                </div>
+                <div class="row grid-demo mt-2">
+                    <div class="col-6 offset-3 bg-grid-danger">.col-6 .offset-3 (Centrado)</div>
+                </div>
+                <div class="row grid-demo mt-2">
+                    <div class="col-2 bg-grid-primary">.col-2</div>
+                    <div class="col-4 offset-2 bg-grid-success">.col-4 .offset-2</div>
+                    <div class="col-2 offset-1 bg-grid-info">.col-2 .offset-1</div>
+                </div>
+            </div>
+
+            <div class="code-label">CÓDIGO</div>
+            <div class="code-block">
+                <span class="comment">&lt;!-- Centrar una columna --&gt;</span><br>
+                <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"row"</span><span class="tag">&gt;</span><br>
+                &nbsp;&nbsp;<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"col-6 offset-3"</span><span class="tag">&gt;</span>Centrado<span class="tag">&lt;/div&gt;</span><br>
+                <span class="tag">&lt;/div&gt;</span>
+            </div>
+
+            <h5 class="mt-4">Offset responsivo</h5>
+            <div class="ejemplo-wrap">
+                <div class="row grid-demo">
+                    <div class="col-8 offset-2 col-md-6 offset-md-3 bg-grid-primary">
+                        .col-8 .offset-2 (móvil)
+                        <br>
+                        .col-md-6 .offset-md-3 (tablet+)
+                    </div>
+                </div>
+                <p class="mt-1"><small>En móvil: 8 de 12 con offset 2 | En tablet+: 6 de 12 con offset 3</small></p>
+            </div>
+
+            <div class="code-label">CÓDIGO</div>
+            <div class="code-block">
+                <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"col-8 offset-2 col-md-6 offset-md-3"</span><span class="tag">&gt;</span><br>
+                &nbsp;&nbsp;Offset responsivo<br>
+                <span class="tag">&lt;/div&gt;</span>
+            </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- SECCIÓN 7: ORDEN                                                -->
+        <!-- ================================================================ -->
+        <section id="orden" class="demo-box">
+            <h3 class="section-title">
+                <i class="bi bi-arrow-down-up text-primary"></i> 7. Orden de Columnas
+            </h3>
+            <p class="text-muted">Cambia el orden visual de las columnas sin modificar el HTML.</p>
+
+            <div class="descripcion">
+                <i class="bi bi-info-circle"></i> 
+                <strong>.order-{number}</strong> - Establece el orden (0-5)<br>
+                <i class="bi bi-info-circle"></i> 
+                <strong>.order-first</strong> - Orden -1 (primero)<br>
+                <i class="bi bi-info-circle"></i> 
+                <strong>.order-last</strong> - Orden 6 (último)<br>
+                <i class="bi bi-info-circle"></i> 
+                <strong>.order-{breakpoint}-{number}</strong> - Orden responsivo
+            </div>
+
+            <h5>Orden básico</h5>
+            <div class="ejemplo-wrap">
+                <div class="row grid-demo">
+                    <div class="col order-last bg-grid-primary">3. order-last</div>
+                    <div class="col order-first bg-grid-success">1. order-first</div>
+                    <div class="col order-2 bg-grid-danger">2. order-2</div>
+                </div>
+            </div>
+
+            <div class="code-label">CÓDIGO</div>
+            <div class="code-block">
+                <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"row"</span><span class="tag">&gt;</span><br>
+                &nbsp;&nbsp;<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"col order-last"</span><span class="tag">&gt;</span>Último<span class="tag">&lt;/div&gt;</span><br>
+                &nbsp;&nbsp;<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"col order-first"</span><span class="tag">&gt;</span>Primero<span class="tag">&lt;/div&gt;</span><br>
+                &nbsp;&nbsp;<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"col order-2"</span><span class="tag">&gt;</span>Medio<span class="tag">&lt;/div&gt;</span><br>
+                <span class="tag">&lt;/div&gt;</span>
+            </div>
+
+            <h5 class="mt-4">Orden responsivo</h5>
+            <div class="ejemplo-wrap">
+                <div class="row grid-demo">
+                    <div class="col order-2 order-md-1 bg-grid-primary">
+                        order-2 order-md-1
+                        <br>
+                        <small>Móvil: 2° | Tablet+: 1°</small>
+                    </div>
+                    <div class="col order-1 order-md-2 bg-grid-success">
+                        order-1 order-md-2
+                        <br>
+                        <small>Móvil: 1° | Tablet+: 2°</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="code-label">CÓDIGO</div>
+            <div class="code-block">
+                <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"col order-2 order-md-1"</span><span class="tag">&gt;</span><br>
+                &nbsp;&nbsp;Móvil: 2°, Tablet+: 1°<br>
+                <span class="tag">&lt;/div&gt;</span>
+            </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- SECCIÓN 8: LAYOUTS                                               -->
+        <!-- ================================================================ -->
+        <section id="layouts" class="demo-box">
+            <h3 class="section-title">
+                <i class="bi bi-layout-wtf text-primary"></i> 8. Layouts Comunes
+            </h3>
+            <p class="text-muted">Ejemplos de layouts reales usando el sistema de malla.</p>
+
+            <div class="descripcion">
+                <i class="bi bi-info-circle"></i> 
+                Combinación de contenedores, filas y columnas para crear estructuras reales
+            </div>
+
+            <h5>Layout 1: Header + Content + Sidebar + Footer</h5>
+            <div class="ejemplo-wrap">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12 bg-grid-primary">HEADER</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-md-3 bg-grid-success">SIDEBAR</div>
+                        <div class="col-12 col-md-9 bg-grid-info">CONTENT</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 bg-grid-dark">FOOTER</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="code-label">CÓDIGO</div>
+            <div class="code-block">
+                <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"container"</span><span class="tag">&gt;</span><br>
+                &nbsp;&nbsp;<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"row"</span><span class="tag">&gt;</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"col-12"</span><span class="tag">&gt;</span>HEADER<span class="tag">&lt;/div&gt;</span><br>
+                &nbsp;&nbsp;<span class="tag">&lt;/div&gt;</span><br>
+                &nbsp;&nbsp;<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"row"</span><span class="tag">&gt;</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"col-12 col-md-3"</span><span class="tag">&gt;</span>SIDEBAR<span class="tag">&lt;/div&gt;</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"col-12 col-md-9"</span><span class="tag">&gt;</span>CONTENT<span class="tag">&lt;/div&gt;</span><br>
+                &nbsp;&nbsp;<span class="tag">&lt;/div&gt;</span><br>
+                &nbsp;&nbsp;<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"row"</span><span class="tag">&gt;</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"col-12"</span><span class="tag">&gt;</span>FOOTER<span class="tag">&lt;/div&gt;</span><br>
+                &nbsp;&nbsp;<span class="tag">&lt;/div&gt;</span><br>
+                <span class="tag">&lt;/div&gt;</span>
+            </div>
+
+            <h5 class="mt-4">Layout 2: Grid de tarjetas (Blog)</h5>
+            <div class="ejemplo-wrap">
+                <div class="container">
+                    <div class="row g-3">
+                        <div class="col-12 col-md-6 col-lg-4">
+                            <div class="bg-grid-primary p-3 rounded">📝 Artículo 1</div>
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-4">
+                            <div class="bg-grid-success p-3 rounded">📝 Artículo 2</div>
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-4">
+                            <div class="bg-grid-danger p-3 rounded">📝 Artículo 3</div>
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-4">
+                            <div class="bg-grid-warning p-3 rounded">📝 Artículo 4</div>
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-4">
+                            <div class="bg-grid-info p-3 rounded">📝 Artículo 5</div>
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-4">
+                            <div class="bg-grid-dark text-white p-3 rounded">📝 Artículo 6</div>
+                        </div>
+                    </div>
+                </div>
+                <p class="mt-1"><small>Móvil: 1 columna | Tablet: 2 columnas | Escritorio: 3 columnas</small></p>
+            </div>
+
+            <div class="code-label">CÓDIGO</div>
+            <div class="code-block">
+                <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"row g-3"</span><span class="tag">&gt;</span><br>
+                &nbsp;&nbsp;<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"col-12 col-md-6 col-lg-4"</span><span class="tag">&gt;</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"bg-primary p-3 rounded"</span><span class="tag">&gt;</span>Artículo 1<span class="tag">&lt;/div&gt;</span><br>
+                &nbsp;&nbsp;<span class="tag">&lt;/div&gt;</span><br>
+                <span class="tag">&lt;/div&gt;</span>
+            </div>
+
+            <h5 class="mt-4">Layout 3: Dashboard con anidación</h5>
+            <div class="ejemplo-wrap">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12 col-md-2 bg-grid-dark text-white p-3">
+                            📊 NAV
+                        </div>
+                        <div class="col-12 col-md-10">
+                            <div class="row g-3">
+                                <div class="col-12 col-xl-6">
+                                    <div class="bg-grid-primary p-3 rounded">Card 1</div>
+                                </div>
+                                <div class="col-12 col-xl-6">
+                                    <div class="bg-grid-success p-3 rounded">Card 2</div>
+                                </div>
+                                <div class="col-12 col-xl-4">
+                                    <div class="bg-grid-danger p-3 rounded">Card 3</div>
+                                </div>
+                                <div class="col-12 col-xl-8">
+                                    <div class="bg-grid-warning p-3 rounded">Card 4</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="code-label">CÓDIGO</div>
+            <div class="code-block">
+                <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"container-fluid"</span><span class="tag">&gt;</span><br>
+                &nbsp;&nbsp;<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"row"</span><span class="tag">&gt;</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"col-12 col-md-2"</span><span class="tag">&gt;</span>NAV<span class="tag">&lt;/div&gt;</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"col-12 col-md-10"</span><span class="tag">&gt;</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"row g-3"</span><span class="tag">&gt;</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"col-12 col-xl-6"</span><span class="tag">&gt;</span>Card 1<span class="tag">&lt;/div&gt;</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="value">"col-12 col-xl-4"</span><span class="tag">&gt;</span>Card 3<span class="tag">&lt;/div&gt;</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;/div&gt;</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;/div&gt;</span><br>
+                &nbsp;&nbsp;<span class="tag">&lt;/div&gt;</span><br>
+                <span class="tag">&lt;/div&gt;</span>
+            </div>
+        </section>
+
+        <!-- ================================================================ -->
+        <!-- ACTIVIDAD PRÁCTICA                                              -->
+        <!-- ================================================================ -->
+        <section class="demo-box bg-light">
+            <h3 class="section-title">
+                <i class="bi bi-pencil-square text-primary"></i> Actividad Práctica
+            </h3>
+            <p class="lead">Crea un layout de página completa usando el sistema de malla</p>
+
+            <div class="descripcion">
+                <i class="bi bi-check-circle-fill text-success"></i> 
+                <strong>Requisitos:</strong>
+                <ul class="mt-2 mb-0">
+                    <li>Header con logo a la izquierda y menú a la derecha</li>
+                    <li>Sección Hero (imagen/llamada a la acción) de ancho completo</li>
+                    <li>Grid de 3 tarjetas de servicios (responsive: 1, 2 o 3 columnas)</li>
+                    <li>Sección de testimonios con 2 columnas</li>
+                    <li>Footer con 4 columnas (contacto, enlaces, redes, copyright)</li>
+                    <li>Usar gutters, offset y/o orden donde sea necesario</li>
+                </ul>
+            </div>
+
+            <div class="ejemplo-wrap">
+                <!-- Ejemplo de layout completo -->
+                <div class="container">
+                    <!-- Header -->
+                    <div class="row align-items-center py-3 border-bottom">
+                        <div class="col-6 col-md-3">
+                            <h4 class="text-primary fw-bold">MiLogo</h4>
+                        </div>
+                        <div class="col-6 col-md-9">
+                            <ul class="list-inline text-end mb-0">
+                                <li class="list-inline-item d-none d-md-inline"><a href="#" class="text-decoration-none">Inicio</a></li>
+                                <li class="list-inline-item d-none d-md-inline"><a href="#" class="text-decoration-none">Servicios</a></li>
+                                <li class="list-inline-item d-none d-md-inline"><a href="#" class="text-decoration-none">Contacto</a></li>
+                                <li class="list-inline-item"><button class="btn btn-primary btn-sm">Login</button></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Hero -->
+                    <div class="row my-4">
+                        <div class="col-12 bg-primary text-white p-5 rounded text-center">
+                            <h1 class="display-4">Bienvenido a MiSitio</h1>
+                            <p class="lead">Creamos soluciones digitales para tu negocio</p>
+                            <button class="btn btn-light btn-lg">Comenzar</button>
+                        </div>
+                    </div>
+
+                    <!-- Servicios -->
+                    <div class="row g-3 my-4">
+                        <div class="col-12 col-md-6 col-lg-4">
+                            <div class="card h-100">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">Servicio 1</h5>
+                                    <p class="card-text">Descripción del servicio 1</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-4">
+                            <div class="card h-100">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">Servicio 2</h5>
+                                    <p class="card-text">Descripción del servicio 2</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 col-lg-4">
+                            <div class="card h-100">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">Servicio 3</h5>
+                                    <p class="card-text">Descripción del servicio 3</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Testimonios -->
+                    <div class="row my-4">
+                        <div class="col-12 col-md-6">
+                            <div class="bg-light p-3 rounded">
+                                <p class="fst-italic">"Excelente servicio, muy recomendado."</p>
+                                <p class="text-muted mb-0">- Cliente 1</p>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="bg-light p-3 rounded">
+                                <p class="fst-italic">"Profesionales y muy atentos."</p>
+                                <p class="text-muted mb-0">- Cliente 2</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="row py-4 border-top">
+                        <div class="col-12 col-md-3">
+                            <h6>Contacto</h6>
+                            <p class="small">info@misitio.com<br>+54 11 1234-5678</p>
+                        </div>
+                        <div class="col-12 col-md-3">
+                            <h6>Enlaces</h6>
+                            <ul class="list-unstyled small">
+                                <li><a href="#" class="text-decoration-none">Inicio</a></li>
+                                <li><a href="#" class="text-decoration-none">Servicios</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-12 col-md-3">
+                            <h6>Redes</h6>
+                            <ul class="list-inline">
+                                <li class="list-inline-item"><a href="#" class="text-decoration-none">📱</a></li>
+                                <li class="list-inline-item"><a href="#" class="text-decoration-none">🐦</a></li>
+                                <li class="list-inline-item"><a href="#" class="text-decoration-none">📷</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-12 col-md-3 text-md-end">
+                            <p class="small text-muted">© 2024 MiSitio<br>Todos los derechos reservados</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- =========================================== -->
+        <!-- FOOTER                                     -->
+        <!-- =========================================== -->
+        <footer class="text-center py-4 mt-5 border-top">
+            <p class="text-muted">
+                <i class="bi bi-grid-3x3-gap-fill text-primary"></i>
+                Demostración del Sistema de Malla de Bootstrap 5
+                <br>
+            </p>
+        </footer>
+
+    </div>
+
+    <!-- ======================== -->
+    <!-- SCRIPTS                -->
+    <!-- ======================== -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
